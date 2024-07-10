@@ -5,7 +5,7 @@
 		<Copyright>Argo Zhang</Copyright>
 		<AssemblyTitle>BootstrapBlazor.NUglify</AssemblyTitle>
 		<Authors>Ron Logan;Alexandre Mutel;Andrew Bullock;Argo Zhang</Authors>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFrameworks>net46;net8.0</TargetFrameworks>
 		<AssemblyName>BootstrapBlazor.NUglify</AssemblyName>
 		<PackageId>BootstrapBlazor.NUglify</PackageId>
 		<PackageTags>CSS;JavaScript;minify;crunch;uglify;Compress;HTML;htmlminifier;htmlcompressor</PackageTags>
@@ -15,13 +15,44 @@
 		<PackageLicense>https://github.com/trullock/NUglify/blob/master/license.txt</PackageLicense>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/ArgoZhang/NUglify?wt.mc_id=DT-MVP-5004174</RepositoryUrl>
-		<Version>8.0.0</Version>
+		<Version>8.0.2</Version>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include="*.resx;Css\*.resx;JavaScript\*.resx" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
 	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
+		<Reference Include="mscorlib" />
+		<Reference Include="System" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Xml" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+		<Reference Include="mscorlib" />
+		<Reference Include="System" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Xml" />
+		<Reference Include="Microsoft.CSharp" />
+	</ItemGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net35' ">
+		<DefineConstants>$(DefineConstants);NET_35;NETPRE45</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net40' ">
+		<DefineConstants>$(DefineConstants);NETPRE45</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+		<DefineConstants>$(DefineConstants);CORE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
 		<NoWarn>$(NoWarn);CS1591</NoWarn>
@@ -30,6 +61,10 @@
 		<SignAssembly>true</SignAssembly>
 		<PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
 	</PropertyGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+		<PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.2.0" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\..\images\nuglify.png" Link="nuglify.png" Pack="true" PackagePath="" />
